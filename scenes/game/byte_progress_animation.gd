@@ -17,6 +17,7 @@ func _ready() -> void:
 	
 	current_label = _create_number_label(current_bytes)
 	add_child(current_label)
+	set_minimum_size(current_label)
 	
 	# 2. CONECTAR LA SEÑAL: Cambia "bytes_changed" por el nombre real de tu señal
 	GlobalData.bytes_changed.connect(_on_global_bytes_changed)
@@ -51,7 +52,7 @@ func _process_next_animation() -> void:
 	# 3. Animamos el número NUEVO
 	var new_label = _create_number_label(current_bytes)
 	add_child(new_label)
-	
+	set_minimum_size(new_label)
 	new_label.position.y = move_distance
 	new_label.modulate.a = 0.0
 	
@@ -73,4 +74,10 @@ func _create_number_label(bytes: float) -> Label:
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	lbl.anchors_preset = Control.PRESET_CENTER
+
 	return lbl
+
+func set_minimum_size(new_label: Label) -> void:
+	var label_min = new_label.get_minimum_size()
+	if label_min.x > custom_minimum_size.x:
+		custom_minimum_size = Vector2(label_min.x, custom_minimum_size.y)

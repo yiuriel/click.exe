@@ -34,23 +34,21 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.26839805, 0.26839802, 0.26839802, 1)
 
-[node name="CounterWrapper" type="HBoxContainer" parent="CanvasLayer" unique_id=290618122]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -187.5
-offset_top = -25.0
-offset_right = 187.5
-offset_bottom = 25.0
+[node name="CounterWrapper" type="VBoxContainer" parent="CanvasLayer" unique_id=290618122]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_vertical = 0
-theme_override_constants/separation = 8
 alignment = 1
 
-[node name="StaticPrefixLabel" type="Label" parent="CanvasLayer/CounterWrapper" unique_id=481543032]
+[node name="HBox" type="HBoxContainer" parent="CanvasLayer/CounterWrapper" unique_id=500905845]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 8
+
+[node name="StaticPrefixLabel" type="Label" parent="CanvasLayer/CounterWrapper/HBox" unique_id=481543032]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_0sr1o")
 theme_override_font_sizes/font_size = 28
@@ -58,14 +56,14 @@ text = "Bytes:"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AnimAnchor" type="Control" parent="CanvasLayer/CounterWrapper" unique_id=1854030978]
+[node name="AnimAnchor" type="Control" parent="CanvasLayer/CounterWrapper/HBox" unique_id=1854030978]
 custom_minimum_size = Vector2(200, 30)
 layout_mode = 2
 size_flags_vertical = 4
 script = ExtResource("3_5i0tg")
 custom_font = ExtResource("2_0sr1o")
 
-[node name="Goal" type="Label" parent="CanvasLayer/CounterWrapper" unique_id=1740321897]
+[node name="Goal" type="Label" parent="CanvasLayer/CounterWrapper/HBox" unique_id=1740321897]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 0.60784316, 1)

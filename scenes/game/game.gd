@@ -35,7 +35,7 @@ func _on_power_up_pressed(power_up: Variant):
 	
 func _on_level_change(_level: int) -> void:
 	$CanvasLayer/NextLevel.visible = false
-	$CanvasLayer/CounterWrapper/Goal.text = GameHelpers._format_bytes(LevelData.goal_per_level[LevelData.level])
+	$CanvasLayer/CounterWrapper/HBox/Goal.text = GameHelpers._format_bytes(LevelData.goal_per_level[LevelData.level])
 
 func _unhandled_input(event: InputEvent) -> void:	
 	if event is InputEventMouseMotion:

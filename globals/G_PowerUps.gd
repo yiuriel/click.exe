@@ -4,13 +4,23 @@ extends Node
 var power_ups = {
 	"data_leak": {
 		"action": "add",
-		"value": 25,
+		"value": 50,
 		"label": "Data leak"
 	},
 	"security_breach": {
 		"action": "multiply",
-		"value": 1.05,
+		"value": 1.1,
 		"label": "Sec. Breach"
+	},
+	"virus": {
+		"action": "subtract",
+		"value": 35,
+		"label": "Virus"
+	},
+	"virus_alert": {
+		"action": "add",
+		"value": 35,
+		"label": "Virus Alert"
 	}
 }
 
@@ -21,7 +31,9 @@ func handle_power_up(power_up: Variant, bytes: int) -> int:
 	if power_up.get('action') == "add":
 		return bytes + power_up_value
 	elif power_up.get('action') == "multiply":
-		return bytes * power_up_value	
+		return bytes * power_up_value
+	elif power_up.get('action') == "subtract":
+		return max(bytes - power_up_value, LevelData.get_previous_level_goal())
 	return bytes
 
 func is_power_up_available() -> bool:

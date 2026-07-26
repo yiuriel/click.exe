@@ -4,11 +4,15 @@ class_name PowerUpScene
 
 var power_up: Variant
 
+var is_bad_power_up: bool
+
 func add_data(incoming_power_up: Variant) -> void:
 	if not incoming_power_up:
 		return
 		
 	power_up = incoming_power_up
+	if power_up.has('action') and power_up.get('action') == "subtract":
+		$PowerUpButton.add_theme_color_override("font_color", Color.FIREBRICK)
 	if power_up.has('label'):
 		$PowerUpButton.text = power_up.get('label')
 		

@@ -1,0 +1,43 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="click.exe"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[autoload]
+
+GlobalData="*uid://bji7o2krhkbpk"
+LevelData="*uid://cx8cmmegvb1tf"
+PowerUps="*uid://c56roy6ukpjhl"
+GameHelpers="*uid://b3pj6uw7tj6vj"
+GAnimHelpers="*uid://kwj7aynkk4xg"
+GUpgrades="*uid://bq7wpoo06s2up"
+GPlayerData="*uid://oc5bs75vyx8q"
+
+[display]
+
+window/stretch/mode="canvas_items"
+
+[dotnet]
+
+project/assembly_name="click.exe"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

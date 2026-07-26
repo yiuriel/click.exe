@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://ppcrd1ca0gs3"]
+
+[ext_resource type="FontFile" uid="uid://3u6yviss6hm6" path="res://assets/fonts/blackout_pixel.ttf" id="1_4i33q"]
+[ext_resource type="Script" uid="uid://q4c7be8qm0mh" path="res://scenes/power_up/power_up.gd" id="1_82c1w"]
+[ext_resource type="Script" uid="uid://cb00ga0lfoi12" path="res://scenes/power_up/power_up_button.gd" id="3_ru046"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a6us8"]
+bg_color = Color(0.6, 0.6, 0.6, 0.5568628)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_top = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ru046"]
+bg_color = Color(0.6, 0.8117647, 0.6, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xn50g"]
+bg_color = Color(0.6, 0.6, 0.8117647, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_top = 3.0
+
+[node name="PowerUp" type="Node2D" unique_id=989264021]
+script = ExtResource("1_82c1w")
+
+[node name="PowerUpButton" type="Button" parent="." unique_id=1147540000]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -61.0
+offset_top = -12.5
+offset_right = 61.0
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9647059, 0.8784314, 0.12941177, 1)
+theme_override_fonts/font = ExtResource("1_4i33q")
+theme_override_styles/normal = SubResource("StyleBoxFlat_a6us8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ru046")
+theme_override_styles/hover = SubResource("StyleBoxFlat_xn50g")
+text = "Power UP"
+script = ExtResource("3_ru046")

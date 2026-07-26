@@ -30,6 +30,7 @@ func add_power_up() -> void:
 func _on_power_up_pressed(power_up: Variant):
 	GlobalData.bytes = PowerUps.handle_power_up(power_up, GlobalData.bytes)
 	if LevelData.is_current_level_finished():
+		$CanvasLayer/NextLevel.text = "Fight: " + LevelData.get_level_data_per_level()
 		$CanvasLayer/NextLevel.visible = true
 	
 func _on_level_change(_level: int) -> void:
@@ -48,4 +49,5 @@ func _unhandled_input(event: InputEvent) -> void:
 		GlobalData.bytes += 1
 		
 	if LevelData.is_current_level_finished():
+		$CanvasLayer/NextLevel.text = "Fight: " + LevelData.get_level_data_per_level().get('boss')
 		$CanvasLayer/NextLevel.visible = true

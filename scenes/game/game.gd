@@ -16,7 +16,7 @@ func _ready() -> void:
 	
 func add_power_up() -> void:
 	var power_up = PowerUps.get_power_up()
-	if PowerUpPreloadScene.can_instantiate() and !LevelData.is_current_level_finished():
+	if power_up != null and PowerUpPreloadScene.can_instantiate():
 		var scene: PowerUpScene = PowerUpPreloadScene.instantiate()
 		scene.add_data(power_up)
 		var x = GameHelpers._get_random_screen_position(0, get_viewport().get_visible_rect().size.x)

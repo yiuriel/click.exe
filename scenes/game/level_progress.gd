@@ -9,5 +9,5 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _on_bytes_changed(bytes: int) -> void:
-	var new_value = bytes * 100 / LevelData.get_goal_per_level()
+	var new_value = GlobalData.bytes * 100 / LevelData.get_goal_per_level()
 	value = new_value

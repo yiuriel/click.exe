@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://dfopy21w2aynn"]
+
+[ext_resource type="Script" uid="uid://b0uqttxjleui6" path="res://scenes/boss/boss.gd" id="1_dgf3a"]
+
+[node name="Boss" type="Node2D" unique_id=285928791]
+script = ExtResource("1_dgf3a")
+
+[node name="BossSprite" type="Sprite2D" parent="." unique_id=1991375062]
+
+[node name="BossTimer" type="Timer" parent="." unique_id=287132664]
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=218541143]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.18
+anchor_right = 0.5
+anchor_bottom = 0.18
+offset_left = -200.0
+offset_top = -15.0
+offset_right = 200.0
+offset_bottom = 15.0
+grow_horizontal = 2
+show_percentage = false
+
+[node name="HpLabel" type="Label" parent="HealthBar" unique_id=1122334455]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14

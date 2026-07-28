@@ -12,7 +12,7 @@ func level_up() -> void:
 	level += 1
 
 var goal_per_level = {
-	1: 20,
+	1: 30,
 	2: 8192,
 	3: 65536,
 	4: 524288,
@@ -24,7 +24,7 @@ var goal_per_level = {
 	10: 137438953472,
 }
 
-var level_data_per_level = {
+var level_data_per_level: Dictionary[int, Dictionary] = {
 	1: {
 		"sector": "Disquete",
 		"boss": "Trojan.exe"
@@ -66,6 +66,14 @@ var level_data_per_level = {
 		"boss": "KERNEL PANIC"
 	}
 }
+
+var is_boss_fight = false
+
+func start_boss_fight() -> void:
+	is_boss_fight = true
+	
+func end_boss_fight() -> void:
+	is_boss_fight = false
 
 func get_previous_level_goal() -> int:
 	if level == 0:

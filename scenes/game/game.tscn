@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://bhebbn7w4qdag" path="res://scenes/game/level.gd" id="4_5i0tg"]
 [ext_resource type="Script" uid="uid://6ffgk5o064lw" path="res://scenes/game/next_level.gd" id="5_lfrn8"]
 [ext_resource type="Script" uid="uid://cuiq2ujcvj61i" path="res://scenes/game/level_progress.gd" id="6_5i0tg"]
+[ext_resource type="Script" uid="uid://c6dtpctqjbp88" path="res://scenes/game/boss_fight.gd" id="6_bdhmt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxEmpty"]
 content_margin_left = 0.0
@@ -109,6 +110,31 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty")
 text = "NEXT LEVEL"
 script = ExtResource("5_lfrn8")
+
+[node name="BossFight" type="Button" parent="CanvasLayer" unique_id=1243306437]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -133.5
+offset_top = 236.0
+offset_right = 133.5
+offset_bottom = 296.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.70980394, 0.15686275, 0.32941177, 1)
+theme_override_colors/font_hover_color = Color(1, 0.14901961, 0.3019608, 1)
+theme_override_fonts/font = ExtResource("2_0sr1o")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxEmpty")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty")
+theme_override_styles/hover = SubResource("StyleBoxEmpty")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty")
+text = "Fight:
+"
+script = ExtResource("6_bdhmt")
 
 [node name="LevelProgress" type="ProgressBar" parent="CanvasLayer" unique_id=1610620139]
 anchors_preset = -1

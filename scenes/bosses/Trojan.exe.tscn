@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dh0rh7a351dcl"]
+
+[ext_resource type="PackedScene" uid="uid://dfopy21w2aynn" path="res://scenes/bosses/boss.tscn" id="1_7g5v6"]
+[ext_resource type="Script" uid="uid://bs4y5k8rr1gfn" path="res://scenes/bosses/trojan.exe.gd" id="2_rucrl"]
+[ext_resource type="Texture2D" uid="uid://vk1w4nepv0p8" path="res://assets/bosses/trojan.webp" id="3_4jsrd"]
+
+[node name="Boss" unique_id=285928791 instance=ExtResource("1_7g5v6")]
+script = ExtResource("2_rucrl")
+
+[node name="BossSprite" parent="." index="0" unique_id=1991375062]
+texture = ExtResource("3_4jsrd")

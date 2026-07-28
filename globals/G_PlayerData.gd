@@ -8,3 +8,6 @@ func _ready() -> void:
 
 func _get_player_bytes(bytes: int) -> void:
 	player_bytes = bytes
+
+func get_player_click_damage() -> int:
+	return 1

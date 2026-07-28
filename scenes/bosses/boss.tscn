@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://dfopy21w2aynn"]
 
 [ext_resource type="Script" uid="uid://b0uqttxjleui6" path="res://scenes/bosses/boss.gd" id="1_dplu8"]
+[ext_resource type="FontFile" uid="uid://3u6yviss6hm6" path="res://assets/fonts/blackout_pixel.ttf" id="2_rdia2"]
 
 [node name="Boss" type="Node2D" unique_id=285928791]
 script = ExtResource("1_dplu8")
 
 [node name="BossSprite" type="Sprite2D" parent="." unique_id=1991375062]
+position = Vector2(160, 0)
 
 [node name="BossTimer" type="Timer" parent="." unique_id=287132664]
 
@@ -15,20 +17,39 @@ anchor_left = 0.5
 anchor_top = 0.18
 anchor_right = 0.5
 anchor_bottom = 0.18
-offset_left = -200.0
-offset_top = -15.0
-offset_right = 200.0
-offset_bottom = 15.0
+offset_left = 376.0
+offset_top = 75.0
+offset_right = 776.0
+offset_bottom = 105.0
 grow_horizontal = 2
 show_percentage = false
+metadata/_edit_use_anchors_ = true
 
 [node name="HpLabel" type="Label" parent="HealthBar" unique_id=1122334455]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TimerBar" type="ProgressBar" parent="." unique_id=137994471]
+offset_left = 50.0
+offset_top = 75.0
+offset_right = 90.0
+offset_bottom = 575.0
+value = 3.0
+fill_mode = 2
+show_percentage = false
+
+[node name="TimerLabel" type="Label" parent="TimerBar" unique_id=1750780442]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 500.0
+theme_override_fonts/font = ExtResource("2_rdia2")
+text = "30"
 horizontal_alignment = 1
 vertical_alignment = 1

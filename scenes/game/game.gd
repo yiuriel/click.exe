@@ -100,7 +100,6 @@ func _on_current_boss_failed() -> void:
 	
 	$CanvasLayer/CounterWrapper/HBox.visible = true
 	$CanvasLayer/LevelProgress.visible = true
-	$CanvasLayer/NextLevel.visible = true
 	# Reactivamos el botón para reintentar la pelea.
 	$CanvasLayer/BossFight.visible = true 
 	# Opcional: reiniciar el progreso del nivel actual si quieres castigar la derrota.

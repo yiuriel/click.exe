@@ -64,7 +64,6 @@ func start_boss_phase() -> void:
 	var current_level = LevelData.level
 	print("Game: Iniciando fase de jefe para nivel: ", current_level)
 	
-	$CanvasLayer/CounterWrapper/HBox.visible = false
 	$CanvasLayer/LevelProgress.visible = false
 	$CanvasLayer/NextLevel.visible = false
 	$CanvasLayer/BossFight.visible = false 
@@ -76,12 +75,10 @@ func _on_current_boss_defeated() -> void:
 	
 	current_boss_instance = null
 	
-	$CanvasLayer/CounterWrapper/HBox.visible = true
 	$CanvasLayer/LevelProgress.visible = true
 	$CanvasLayer/NextLevel.visible = true
 	
 	LevelData.end_boss_fight()
-	LevelData.level_up() # Asumimos que esta función existe y sube LevelData.level
 
 func _on_current_boss_failed() -> void:
 	# Esta función se llama cuando el jefe emite 'boss_failed' (tiempo agotado).
@@ -92,18 +89,10 @@ func _on_current_boss_failed() -> void:
 	if is_instance_valid(current_boss_instance):
 		current_boss_instance.queue_free()
 		current_boss_instance = null
-		
-	# -- GESTIÓN DE UI --
-	# Mostramos una pantalla de fallo o simplemente restauramos la UI de farmeo
-	# para que el jugador pueda intentarlo de nuevo cuando quiera.
-	# (Aquí podrías poner lógica de 'Game Over' más compleja).
 	
-	$CanvasLayer/CounterWrapper/HBox.visible = true
 	$CanvasLayer/LevelProgress.visible = true
 	# Reactivamos el botón para reintentar la pelea.
 	$CanvasLayer/BossFight.visible = true 
-	# Opcional: reiniciar el progreso del nivel actual si quieres castigar la derrota.
-	# LevelData.reset_current_level_progress()
 	LevelData.end_boss_fight()
 	
 func add_power_up() -> void:
@@ -128,7 +117,7 @@ func _on_power_up_pressed(power_up: Variant):
 func _on_level_change(_level: int) -> void:
 	$CanvasLayer/NextLevel.visible = false
 	$CanvasLayer/BossFight.visible = false
-	$CanvasLayer/CounterWrapper/HBox/Goal.text = GameHelpers._format_bytes(LevelData.goal_per_level[LevelData.level])
+	$CanvasLayer/LevelProgress/HBox/Goal.text = GameHelpers._format_bytes(LevelData.goal_per_level[LevelData.level])
 
 func _unhandled_input(event: InputEvent) -> void:	
 	if event is InputEventMouseMotion or LevelData.is_boss_fight:

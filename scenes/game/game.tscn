@@ -2,11 +2,13 @@
 
 [ext_resource type="Script" uid="uid://jqd5uoicekn5" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="FontFile" uid="uid://3u6yviss6hm6" path="res://assets/fonts/blackout_pixel.ttf" id="2_0sr1o"]
-[ext_resource type="Script" uid="uid://cfmk74c4nggrk" path="res://scenes/game/byte_progress_animation.gd" id="3_5i0tg"]
+[ext_resource type="Texture2D" uid="uid://drs73s37eh0k5" path="res://assets/images/monitor.png" id="2_87uf6"]
 [ext_resource type="Script" uid="uid://bhebbn7w4qdag" path="res://scenes/game/level.gd" id="4_5i0tg"]
+[ext_resource type="Script" uid="uid://ddqvebs4nmn6d" path="res://scenes/game/current_bytes.gd" id="4_87uf6"]
 [ext_resource type="Script" uid="uid://6ffgk5o064lw" path="res://scenes/game/next_level.gd" id="5_lfrn8"]
 [ext_resource type="Script" uid="uid://cuiq2ujcvj61i" path="res://scenes/game/level_progress.gd" id="6_5i0tg"]
 [ext_resource type="Script" uid="uid://c6dtpctqjbp88" path="res://scenes/game/boss_fight.gd" id="6_bdhmt"]
+[ext_resource type="Script" uid="uid://cwr3m7qehwqnn" path="res://scenes/game/command_line.gd" id="9_2a8rs"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxEmpty"]
 content_margin_left = 0.0
@@ -16,24 +18,39 @@ content_margin_bottom = 0.0
 bg_color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5i0tg"]
-bg_color = Color(0.14509805, 0.15686275, 0.16862746, 1)
+bg_color = Color(0.14509805, 0.15686275, 0.16862746, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.1882353, 0.89411765, 0.29411766, 1)
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bdhmt"]
-bg_color = Color(0.40392157, 0.73333335, 0.8509804, 1)
+bg_color = Color(0.34117648, 0.9098039, 0.23921569, 0.6392157)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2a8rs"]
+content_margin_left = 1.0
+content_margin_top = 2.0
+content_margin_right = 1.0
+content_margin_bottom = 0.0
 
 [node name="Game" type="Node2D" unique_id=1011191295]
 script = ExtResource("1_sul5r")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=769795651]
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1112427219]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=1796567943]
+z_index = -1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-color = Color(0.26839805, 0.26839802, 0.26839802, 1)
+texture = ExtResource("2_87uf6")
 
 [node name="CounterWrapper" type="VBoxContainer" parent="CanvasLayer" unique_id=290618122]
 anchors_preset = 15
@@ -43,34 +60,6 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="HBox" type="HBoxContainer" parent="CanvasLayer/CounterWrapper" unique_id=500905845]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 8
-
-[node name="StaticPrefixLabel" type="Label" parent="CanvasLayer/CounterWrapper/HBox" unique_id=481543032]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_0sr1o")
-theme_override_font_sizes/font_size = 28
-text = "Bytes:"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="AnimAnchor" type="Control" parent="CanvasLayer/CounterWrapper/HBox" unique_id=1854030978]
-custom_minimum_size = Vector2(200, 30)
-layout_mode = 2
-size_flags_vertical = 4
-script = ExtResource("3_5i0tg")
-custom_font = ExtResource("2_0sr1o")
-
-[node name="Goal" type="Label" parent="CanvasLayer/CounterWrapper/HBox" unique_id=1740321897]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 0.60784316, 1)
-theme_override_fonts/font = ExtResource("2_0sr1o")
-theme_override_font_sizes/font_size = 30
-
 [node name="Level" type="Label" parent="CanvasLayer" unique_id=2010081917]
 anchors_preset = 5
 anchor_left = 0.5
@@ -79,7 +68,7 @@ offset_left = -90.12163
 offset_right = 90.12163
 offset_bottom = 57.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(0.77254903, 0.16078432, 0.3647059, 1)
+theme_override_colors/font_color = Color(0.7764706, 0.6627451, 0.5803922, 1)
 theme_override_fonts/font = ExtResource("2_0sr1o")
 theme_override_font_sizes/font_size = 20
 text = "Level: 1"
@@ -93,10 +82,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -120.0
-offset_top = 199.0
-offset_right = 120.0
-offset_bottom = 259.0
+offset_left = -133.5
+offset_top = 191.0
+offset_right = 133.5
+offset_bottom = 251.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -118,9 +107,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -133.5
-offset_top = 236.0
+offset_top = 228.0
 offset_right = 133.5
-offset_bottom = 296.0
+offset_bottom = 288.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -142,12 +131,73 @@ anchor_left = 0.5
 anchor_top = 0.11
 anchor_right = 0.5
 anchor_bottom = 0.12
-offset_left = -200.14404
-offset_top = -13.224007
-offset_right = 199.85596
-offset_bottom = 13.775993
+offset_left = -300.144
+offset_top = -13.223999
+offset_right = 299.85596
+offset_bottom = 13.776009
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.9490196, 0.9490196, 0.9490196, 0)
 theme_override_styles/background = SubResource("StyleBoxFlat_5i0tg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_bdhmt")
 script = ExtResource("6_5i0tg")
+
+[node name="HBox" type="HBoxContainer" parent="CanvasLayer/LevelProgress" unique_id=500905845]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -93.5
+offset_top = -12.5
+offset_right = 93.5
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 4)
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="CurrentBytes" type="Label" parent="CanvasLayer/LevelProgress/HBox" unique_id=1592042543]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.84705883, 1)
+theme_override_fonts/font = ExtResource("2_0sr1o")
+theme_override_font_sizes/font_size = 20
+text = "0 B"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("4_87uf6")
+
+[node name="Separator" type="Label" parent="CanvasLayer/LevelProgress/HBox" unique_id=917797205]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_0sr1o")
+theme_override_font_sizes/font_size = 24
+text = "/"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Goal" type="Label" parent="CanvasLayer/LevelProgress/HBox" unique_id=1740321897]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.84705883, 1)
+theme_override_fonts/font = ExtResource("2_0sr1o")
+theme_override_font_sizes/font_size = 20
+text = "30 B"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="CommandLine" type="RichTextLabel" parent="CanvasLayer" unique_id=982757426]
+offset_left = 56.0
+offset_top = 110.0
+offset_right = 1096.0
+offset_bottom = 510.0
+theme_override_colors/default_color = Color(0.2901961, 0.9647059, 0.14901961, 0.8117647)
+theme_override_constants/line_separation = 4
+theme_override_fonts/normal_font = ExtResource("2_0sr1o")
+theme_override_font_sizes/normal_font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2a8rs")
+bbcode_enabled = true
+autowrap_mode = 1
+script = ExtResource("9_2a8rs")

@@ -8,32 +8,36 @@ signal boss_failed
 var health: float = 1024
 var bar_stylebox: StyleBoxFlat
 
+@onready var health_bar: ProgressBar = find_child("HealthBar", true, false)
+@onready var timer_bar: ProgressBar = find_child("TimerBar", true, false)
+@onready var boss_timer: Timer = find_child("BossTimer", true, false)
+@onready var timer_label: Label = find_child("TimerLabel", true, false)
+@onready var hp_label: Label = find_child("HpLabel", true, false)
+@onready var boss_sprite: Sprite2D = find_child("BossSprite", true, false)
+
 func _ready() -> void:
-	$HealthBar.max_value = health
-	$HealthBar.value = health
+	health_bar.max_value = health
+	health_bar.value = health
 	_update_health_label()
 	
-	center_sprite()
-	center_health_bar()
-	
-	var original_style = $TimerBar.get_theme_stylebox("fill")
+	var original_style = timer_bar.get_theme_stylebox("fill")
 	bar_stylebox = original_style.duplicate() as StyleBoxFlat
-	$TimerBar.add_theme_stylebox_override("fill", bar_stylebox)
+	timer_bar.add_theme_stylebox_override("fill", bar_stylebox)
 	
-	$BossTimer.timeout.connect(_on_boss_timer_timeout)
+	boss_timer.timeout.connect(_on_boss_timer_timeout)
 	
 	start_boss_timer(30)
 
 func start_boss_timer(duration: float) -> void:
-	$TimerBar.max_value = 100.0
-	$TimerBar.value = 100.0
+	timer_bar.max_value = 100.0
+	timer_bar.value = 100.0
 	bar_stylebox.bg_color = Color("#4ad15e")
 	
-	$BossTimer.start(duration)
+	boss_timer.start(duration)
 	
 	var tween = create_tween()
 	# Tell the tween that the following animations should run simultaneously
-	tween.parallel().tween_property($TimerBar, "value", 0.0, duration)
+	tween.parallel().tween_property(timer_bar, "value", 0.0, duration)
 	tween.parallel().tween_method(check_bar_color, 100.0, 0.0, duration)
 
 func check_bar_color(current_value: float) -> void:
@@ -44,44 +48,34 @@ func check_bar_color(current_value: float) -> void:
 	else:
 		bar_stylebox.bg_color = Color("#f6354d")
 		
-	var seconds_left = ceil((current_value / 100.0) * $BossTimer.wait_time)
-	$TimerBar/TimerLabel.text = str(int(seconds_left))
+	var seconds_left = ceil((current_value / 100.0) * boss_timer.wait_time)
+	timer_label.text = str(int(seconds_left))
 
 func take_damage(amount: float) -> void:
-	if health <= 0 or $BossTimer.is_stopped():
+	if health <= 0 or boss_timer.is_stopped():
 		return
 		
 	health -= amount
-	$HealthBar.value = health
+	health_bar.value = health
 	_update_health_label()
 	
 	if health <= 0:
 		health = 0
-		$HealthBar.value = 0
+		health_bar.value = 0
 		_update_health_label()
 		die()
 
 func die() -> void:
-	$BossTimer.stop()
+	boss_timer.stop()
 	print("Boss base: Muriendo...")
 	boss_defeated.emit()
 	queue_free()
 
 func _on_boss_timer_timeout() -> void:
-	$TimerBar/TimerLabel.text = "0"
+	timer_label.text = "0"
 	print("Boss base: Tiempo agotado...")
 	boss_failed.emit()
 
 func _update_health_label() -> void:
-	if has_node("HealthBar/HpLabel"):
-		$HealthBar/HpLabel.text = GameHelpers._format_bytes(health)
-
-func center_sprite() -> void:
-	var viewport = get_viewport()
-	if viewport and has_node("BossSprite"):
-		$BossSprite.position = viewport.get_visible_rect().size / 2
-		
-func center_health_bar() -> void:
-	var viewport = get_viewport()
-	if viewport and has_node("HealthBar"):
-		$HealthBar.position.x = (viewport.get_visible_rect().size / 2).x - $HealthBar.size.x / 2
+	if hp_label:
+		hp_label.text = GameHelpers._format_bytes(health)

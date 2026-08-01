@@ -7,8 +7,7 @@
 [node name="Boss" unique_id=285928791 instance=ExtResource("1_7g5v6")]
 script = ExtResource("2_rucrl")
 
-[node name="BossSprite" parent="." index="0" unique_id=1991375062]
+[node name="BossSprite" parent="BossCanvas/HBoxContainer/MarginContainer/BossContainer/CenterContainer" parent_id_path=PackedInt32Array(1405739485) index="0" unique_id=1991375062]
 texture_filter = 1
-position = Vector2(-141.25, -324.78088)
 scale = Vector2(0.45, 0.45)
 texture = ExtResource("3_ycfi6")

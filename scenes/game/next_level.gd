@@ -1,4 +1,5 @@
 extends Button
 
 func _pressed() -> void:
-	LevelData.level_up()
+	if LevelData.is_victory():
+		LevelData.level_up()

@@ -109,7 +109,7 @@ var level_data_per_level: Dictionary[int, Dictionary] = {
 }
 
 func get_previous_level_goal() -> int:
-	if level == 0:
+	if level <= 1:
 		return 0
 	
 	return goal_per_level[level - 1]

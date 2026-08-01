@@ -12,6 +12,7 @@ var current_boss_instance: Boss = null
 @onready var next_level_button: Button = find_child("NextLevel", true, false)
 @onready var goal_label: Label = find_child("Goal", true, false)
 @onready var boss_positioner: Control = find_child("BossPositioner", true, false)
+@onready var power_ups_container: MarginContainer = find_child("PowerUpsContainer", true, false)
 
 func _ready() -> void:
 	LevelData.level_change.connect(_on_level_change)
@@ -94,10 +95,11 @@ func add_power_up() -> void:
 	if power_up != null and PowerUpPreloadScene.can_instantiate():
 		var scene: PowerUpScene = PowerUpPreloadScene.instantiate()
 		scene.add_data(power_up)
-		var x: float = GameHelpers._get_random_screen_position(0, get_viewport().get_visible_rect().size.x)
-		var y: float = GameHelpers._get_random_screen_position(0, get_viewport().get_visible_rect().size.y)
+		var bounds: Rect2 = power_ups_container.get_rect()
+		var x: float = GameHelpers._get_random_screen_position(bounds.position.x, bounds.size.x)
+		var y: float = GameHelpers._get_random_screen_position(bounds.position.y, bounds.size.y)
 		scene.set_power_up_position(x, y)
-		ui_canvas_layer.add_child(scene)
+		power_ups_container.add_child(scene)
 		var power_up_button: Button = scene.find_child("PowerUpButton", true, false)
 		power_up_button.connect("power_up_pressed", _on_power_up_pressed)
 		

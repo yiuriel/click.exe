@@ -2,6 +2,6 @@ extends Button
 
 signal boss_fight_start
 
-# Called when the node enters the scene tree for the first time.
 func _pressed() -> void:
-	boss_fight_start.emit()
+	if LevelData.is_waiting_interaction() or LevelData.is_defeat():
+		boss_fight_start.emit()

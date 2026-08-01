@@ -37,7 +37,7 @@ func handle_power_up(power_up: Variant, bytes: int) -> int:
 	return bytes
 
 func is_power_up_available() -> bool:
-	return !LevelData.is_current_level_finished()
+	return LevelData.is_game_level()
 
 func get_power_up() -> Variant:
 	if is_power_up_available():

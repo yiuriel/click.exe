@@ -1,6 +1,22 @@
 extends Node
 
 signal level_change(new_level: int)
+signal game_state_changed(new_state: GameState)
+
+enum GameState {
+	GAME_LEVEL,               # Jugando el nivel, se pueden sumar bytes
+	WAITING_FOR_INTERACTION,  # Nivel completo, se pueden sumar bytes y pelear
+	BOSS_LEVEL,               # Pelea contra el jefe, no se suman bytes
+	VICTORY,                  # Jefe derrotado, botón siguiente nivel
+	DEFEAT,                   # Jefe fallido, botón reintentar pelea
+}
+
+var game_state: GameState = GameState.GAME_LEVEL:
+	set(new_state):
+		if game_state == new_state:
+			return
+		game_state = new_state
+		game_state_changed.emit(game_state)
 
 var level = 1:
 	set(new_level):
@@ -10,9 +26,34 @@ var level = 1:
 
 func level_up() -> void:
 	level += 1
+	game_state = GameState.GAME_LEVEL
+
+func start_boss_fight() -> void:
+	game_state = GameState.BOSS_LEVEL
+
+func boss_fight_won() -> void:
+	game_state = GameState.VICTORY
+
+func boss_fight_lost() -> void:
+	game_state = GameState.DEFEAT
+
+func is_game_level() -> bool:
+	return game_state == GameState.GAME_LEVEL
+
+func is_waiting_interaction() -> bool:
+	return game_state == GameState.WAITING_FOR_INTERACTION
+
+func is_boss_level() -> bool:
+	return game_state == GameState.BOSS_LEVEL
+
+func is_victory() -> bool:
+	return game_state == GameState.VICTORY
+
+func is_defeat() -> bool:
+	return game_state == GameState.DEFEAT
 
 var goal_per_level = {
-	1: 30,
+	1: 20,
 	2: 8192,
 	3: 65536,
 	4: 524288,
@@ -66,14 +107,6 @@ var level_data_per_level: Dictionary[int, Dictionary] = {
 		"boss": "KERNEL PANIC"
 	}
 }
-
-var is_boss_fight = false
-
-func start_boss_fight() -> void:
-	is_boss_fight = true
-	
-func end_boss_fight() -> void:
-	is_boss_fight = false
 
 func get_previous_level_goal() -> int:
 	if level == 0:

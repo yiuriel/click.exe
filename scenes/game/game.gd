@@ -6,10 +6,18 @@ const BOSS_SCENES_DIR = "res://scenes/bosses/"
 
 var current_boss_instance: Boss = null
 
+@onready var ui_canvas_layer: CanvasLayer = find_child("CanvasLayer", true, false)
+@onready var boss_fight_button: Button = find_child("BossFight", true, false)
+@onready var level_progress_bar: ProgressBar = find_child("LevelProgress", true, false)
+@onready var next_level_button: Button = find_child("NextLevel", true, false)
+@onready var goal_label: Label = find_child("Goal", true, false)
+@onready var boss_positioner: Control = find_child("BossPositioner", true, false)
+
 func _ready() -> void:
-	if LevelData.has_signal("level_change"):
-		LevelData.connect("level_change", _on_level_change)
-		_on_level_change(0)
+	LevelData.level_change.connect(_on_level_change)
+	LevelData.game_state_changed.connect(_on_game_state_changed)
+	GlobalData.bytes_changed.connect(_on_bytes_changed)
+	_on_level_change(0)
 	
 	var power_up_timer = Timer.new()
 	add_child(power_up_timer)
@@ -17,7 +25,7 @@ func _ready() -> void:
 	power_up_timer.start(PowerUps.power_up_timer)
 	power_up_timer.timeout.connect(add_power_up)
 	
-	$CanvasLayer/BossFight.connect("boss_fight_start", start_boss_phase)
+	boss_fight_button.connect("boss_fight_start", start_boss_phase)
 
 func load_and_instance_boss_for_level(level_number: int) -> void:
 	if is_instance_valid(current_boss_instance):
@@ -28,21 +36,21 @@ func load_and_instance_boss_for_level(level_number: int) -> void:
 		printerr("Error: El nivel ", level_number, " no está definido en LevelData.level_data_per_level.")
 		return
 	
-	var boss_file_name = LevelData.level_data_per_level[level_number]["boss"]
+	var boss_file_name: String = LevelData.level_data_per_level[level_number]["boss"]
 	
-	var full_boss_path = BOSS_SCENES_DIR + boss_file_name + ".tscn"
+	var full_boss_path: String = BOSS_SCENES_DIR + boss_file_name + ".tscn"
 	
 	if not FileAccess.file_exists(full_boss_path):
 		printerr("Error Crítico: No se pudo encontrar el archivo .tscn del jefe en la ruta: ", full_boss_path)
 		return
 
-	var boss_scene = load(full_boss_path)
+	var boss_scene: PackedScene = load(full_boss_path)
 	
 	if not boss_scene:
 		printerr("Error: Falló la carga de la escena en: ", full_boss_path)
 		return
 
-	var raw_boss_node = boss_scene.instantiate()
+	var raw_boss_node: Node = boss_scene.instantiate()
 	
 	current_boss_instance = raw_boss_node as Boss
 	
@@ -51,7 +59,8 @@ func load_and_instance_boss_for_level(level_number: int) -> void:
 		raw_boss_node.queue_free() # Limpiamos el nodo incorrecto.
 		return
 
-	$CanvasLayer.add_child(current_boss_instance)
+	boss_positioner.visible = true
+	boss_positioner.add_child(current_boss_instance)
 	
 	current_boss_instance.boss_defeated.connect(_on_current_boss_defeated)
 	current_boss_instance.boss_failed.connect(_on_current_boss_failed)
@@ -61,12 +70,8 @@ func load_and_instance_boss_for_level(level_number: int) -> void:
 func start_boss_phase() -> void:
 	LevelData.start_boss_fight()
 	
-	var current_level = LevelData.level
+	var current_level: int = LevelData.level
 	print("Game: Iniciando fase de jefe para nivel: ", current_level)
-	
-	$CanvasLayer/LevelProgress.visible = false
-	$CanvasLayer/NextLevel.visible = false
-	$CanvasLayer/BossFight.visible = false 
 	
 	load_and_instance_boss_for_level(current_level)
 
@@ -74,53 +79,54 @@ func _on_current_boss_defeated() -> void:
 	print("Game: ¡Victoria! El jefe fue derrotado.")
 	
 	current_boss_instance = null
-	
-	$CanvasLayer/LevelProgress.visible = true
-	$CanvasLayer/NextLevel.visible = true
-	
-	LevelData.end_boss_fight()
+	LevelData.boss_fight_won()
 
 func _on_current_boss_failed() -> void:
-	# Esta función se llama cuando el jefe emite 'boss_failed' (tiempo agotado).
 	print("Game: Derrota... El tiempo se acabó.")
 	
-	# -- GESTIÓN DE JUEGO --
-	# En caso de derrota, eliminamos manualmente al jefe de la pantalla.
 	if is_instance_valid(current_boss_instance):
 		current_boss_instance.queue_free()
 		current_boss_instance = null
-	
-	$CanvasLayer/LevelProgress.visible = true
-	# Reactivamos el botón para reintentar la pelea.
-	$CanvasLayer/BossFight.visible = true 
-	LevelData.end_boss_fight()
+	LevelData.boss_fight_lost()
 	
 func add_power_up() -> void:
 	var power_up = PowerUps.get_power_up()
 	if power_up != null and PowerUpPreloadScene.can_instantiate():
 		var scene: PowerUpScene = PowerUpPreloadScene.instantiate()
 		scene.add_data(power_up)
-		var x = GameHelpers._get_random_screen_position(0, get_viewport().get_visible_rect().size.x)
-		var y = GameHelpers._get_random_screen_position(0, get_viewport().get_visible_rect().size.y)
+		var x: float = GameHelpers._get_random_screen_position(0, get_viewport().get_visible_rect().size.x)
+		var y: float = GameHelpers._get_random_screen_position(0, get_viewport().get_visible_rect().size.y)
 		scene.set_power_up_position(x, y)
-		$CanvasLayer.add_child(scene)
-		var powerUpButton = scene.find_child("PowerUpButton")
-		powerUpButton.connect("power_up_pressed", _on_power_up_pressed)
+		ui_canvas_layer.add_child(scene)
+		var power_up_button: Button = scene.find_child("PowerUpButton", true, false)
+		power_up_button.connect("power_up_pressed", _on_power_up_pressed)
 		
 		
 func _on_power_up_pressed(power_up: Variant):
 	GlobalData.bytes = PowerUps.handle_power_up(power_up, GlobalData.bytes)
-	if LevelData.is_current_level_finished():
-		$CanvasLayer/BossFight.text = "Fight: " + LevelData.get_level_data_per_level()
-		$CanvasLayer/BossFight.visible = true
+	
+func _on_bytes_changed(_bytes: int) -> void:
+	if LevelData.is_game_level() and LevelData.is_current_level_finished():
+		LevelData.game_state = LevelData.GameState.WAITING_FOR_INTERACTION
+	else:
+		_update_ui_visibility()
+	
+func _on_game_state_changed(_new_state: LevelData.GameState) -> void:
+	_update_ui_visibility()
+	
+func _update_ui_visibility() -> void:
+	boss_positioner.visible = LevelData.game_state == LevelData.GameState.BOSS_LEVEL
+	level_progress_bar.visible = LevelData.game_state != LevelData.GameState.BOSS_LEVEL
+	next_level_button.visible = LevelData.is_victory()
+	boss_fight_button.visible = LevelData.is_waiting_interaction() or LevelData.is_defeat()
 	
 func _on_level_change(_level: int) -> void:
-	$CanvasLayer/NextLevel.visible = false
-	$CanvasLayer/BossFight.visible = false
-	$CanvasLayer/LevelProgress/HBox/Goal.text = GameHelpers._format_bytes(LevelData.goal_per_level[LevelData.level])
+	goal_label.text = GameHelpers._format_bytes(LevelData.goal_per_level[LevelData.level])
+	boss_fight_button.text = "Fight: " + LevelData.get_level_data_per_level().get('boss')
+	_update_ui_visibility()
 
 func _unhandled_input(event: InputEvent) -> void:	
-	if event is InputEventMouseMotion or LevelData.is_boss_fight:
+	if event is InputEventMouseMotion or not (LevelData.is_game_level() or LevelData.is_waiting_interaction()):
 		return
 		
 	if event is InputEventMouseButton and not event.is_echo() and event.is_pressed():
@@ -129,7 +135,3 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventKey and not event.is_echo() and event.is_pressed():
 		GlobalData.bytes += 1
-		
-	if LevelData.is_current_level_finished():
-		$CanvasLayer/BossFight.text = "Fight: " + LevelData.get_level_data_per_level().get('boss')
-		$CanvasLayer/BossFight.visible = true
